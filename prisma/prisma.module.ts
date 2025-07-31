@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { PrismaService } from './prisma.service';
-import { JwtStrategy } from '../auth/jwt.strategy';
+import { JwtStrategy } from '../src/auth/strategies/jwt.strategy';
 
 @Global()
 @Module({

@@ -1,11 +1,10 @@
 import { Controller, Get, Patch, UseGuards, Req, Body } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserService } from './user.service';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { updateUserDto } from './dto/update-user.dto';
 import { Request } from 'express';
 import { User } from '@prisma/client';
 
-// Perbaiki tipe kustom
 export interface RequestWithUser extends Request {
     user: User;
     }
@@ -23,7 +22,7 @@ export interface RequestWithUser extends Request {
     @Patch('profile')
     async updateProfile(
         @Req() req: RequestWithUser,
-        @Body() dto: UpdateUserDto
+        @Body() dto: updateUserDto
     ) {
         return this.userService.updateProfile(req.user.id, dto);
     }
