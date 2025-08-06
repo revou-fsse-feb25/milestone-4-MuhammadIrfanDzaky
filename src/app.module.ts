@@ -5,18 +5,11 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { AccountModule } from './account/account.module';
-import { RolesGuard } from './common/guards/roles.guard';
-import { APP_GUARD } from '@nestjs/core';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, UserModule, AccountModule],
+  imports: [PrismaModule, AuthModule, UserModule, AccountModule, TransactionModule],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard, // Global guard untuk semua endpoint
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

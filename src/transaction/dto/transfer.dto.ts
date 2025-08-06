@@ -1,10 +1,14 @@
 import { IsInt, IsPositive } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class DepositDto {
+export class TransferDto {
     @IsInt()
     @IsPositive()
-    accountId: number;
+    fromAccountId: number;
+
+    @IsInt()
+    @IsPositive()
+    toAccountId: number;
 
     @IsPositive()
     @Type(() => BigInt)

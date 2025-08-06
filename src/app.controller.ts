@@ -8,7 +8,7 @@ export class AppController {
   @Get('db-check')
   async dbCheck() {
     try {
-      await this.prisma.$queryRaw`SELECT 1`;
+      await this.prisma.user.count();
       return { status: 'Database connected' };
     } catch (error) {
       return { 

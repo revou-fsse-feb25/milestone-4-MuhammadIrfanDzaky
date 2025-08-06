@@ -1,25 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../../prisma/prisma.service';
-import { updateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
     constructor(private prisma: PrismaService) {}
 
     async getProfile(userId: number) {
-        return this.prisma.user.findUnique({
-        where: { id: userId },
-        select: {
-            id: true,
-            email: true,
-            name: true,
-            createdAt: true,
-        },
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            select: { id: true, email: true, name: true }
         });
+        
+        if (!user) {
+            throw new NotFoundException('User not found'); // Gunakan NotFoundException
+        }
+        return user;
     }
 
-    async updateProfile(userId: number, dto: updateUserDto) {
+    async updateProfile(userId: number, dto: UpdateUserDto) {
+        const user = await this.prisma.user.findUnique({ where: { id: userId }});
+        if (!user) throw new ForbiddenException('User not found');
+
         const updateData: { name?: string; email?: string; password?: string } = {};
 
         if (dto.name) updateData.name = dto.name;
